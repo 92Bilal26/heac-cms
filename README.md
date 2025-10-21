@@ -57,6 +57,26 @@ git clone <repository-url>
 cd heac-cms
 ```
 
+### 1.5. Configure the upstream GitHub repository (optional)
+
+If you are working in a Codespaces or containerized environment, confirm that the
+project is connected to your GitHub repository before pushing updates. The default
+`work` branch in this workspace does not have a remote configured. Add your remote
+and push the branch manually:
+
+```bash
+git remote add origin https://github.com/<your-account>/<your-repo>.git
+git fetch origin
+git branch --set-upstream-to=origin/work work
+git push -u origin work
+```
+
+After the remote is configured once, subsequent pushes only require:
+
+```bash
+git push
+```
+
 ### 2. Install PHP dependencies
 
 ```bash
