@@ -1,0 +1,5 @@
+<svg width="300" height="150" viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="300" height="150" rx="15" ry="15" fill="#2E64FE"/>
+  <text x="150" y="70" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="white" text-anchor="middle" alignment-baseline="middle">HEAC</text>
+  <text x="150" y="115" font-family="Arial, sans-serif" font-size="20" fill="white" text-anchor="middle" alignment-baseline="middle">Halal Economy Advisory Centre</text>
+</svg>
