@@ -72,7 +72,7 @@ jobs:
           php artisan db:seed --force
 
       - name: Export static site
-        run: php artisan export:static-site
+        run: php artisan export:static-site --base-url=https://92bilal26.github.io/heac-cms --asset-url=https://92bilal26.github.io/heac-cms
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
