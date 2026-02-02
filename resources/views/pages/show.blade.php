@@ -7,24 +7,28 @@
 @section('content')
 <div class="bg-white">
     {{-- Page Header --}}
-    <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-12">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 class="text-4xl md:text-5xl font-bold">
+    <div class="relative bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-800 text-white py-20 overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-0 left-0 w-96 h-96 bg-sky-400 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 right-0 w-96 h-96 bg-indigo-500 rounded-full blur-3xl"></div>
+        </div>
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
                 {{ $page->title }}
             </h1>
             @if($page->excerpt)
-            <p class="text-xl text-blue-100 mt-4 max-w-3xl">
+            <p class="text-xl md:text-2xl text-blue-100 mt-4 max-w-4xl leading-relaxed">
                 {{ $page->excerpt }}
             </p>
             @endif
         </div>
     </div>
 
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="flex flex-col lg:flex-row gap-8">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="flex flex-col lg:flex-row gap-12">
             {{-- Main Content --}}
             <div class="flex-1">
-                <article class="prose prose-lg max-w-none">
+                <article class="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-gray-900 prose-p:text-gray-700 prose-p:leading-relaxed prose-a:text-blue-600 prose-a:no-underline hover:prose-a:text-blue-700">
                     @if(is_array($page->content))
                         {{-- Render JSON content blocks --}}
                         @foreach($page->content as $block)
@@ -149,14 +153,17 @@
             <aside class="lg:w-80 flex-shrink-0">
                 {{-- Navigation Sidebar --}}
                 @if(isset($sidebarPages) && $sidebarPages->count() > 0)
-                <div class="bg-gray-50 rounded-lg p-6 mb-6 sticky top-20">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                <div class="bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl p-6 mb-6 sticky top-20 border border-gray-200 shadow-sm">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
                         Related Pages
                     </h3>
                     <nav class="space-y-2">
                         @foreach($sidebarPages as $sidebarPage)
-                        <a href="{{ route('page.show', $sidebarPage->slug) }}" 
-                           class="block px-3 py-2 rounded-md text-sm {{ $sidebarPage->id === $page->id ? 'bg-blue-600 text-white' : 'text-gray-700 hover:bg-gray-200' }} transition">
+                        <a href="{{ route('page.show', $sidebarPage->slug) }}"
+                           class="block px-4 py-3 rounded-xl text-sm font-medium {{ $sidebarPage->id === $page->id ? 'bg-blue-600 text-white shadow-md' : 'text-gray-700 hover:bg-white hover:shadow-sm' }} transition-all duration-200">
                             {{ $sidebarPage->title }}
                         </a>
                         @endforeach
@@ -165,25 +172,32 @@
                 @endif
 
                 {{-- Quick Links --}}
-                <div class="bg-blue-50 rounded-lg p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-200 shadow-sm">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
                         Quick Links
                     </h3>
                     <ul class="space-y-3">
                         <li>
-                            <a href="{{ route('research.index') }}" class="text-blue-600 hover:text-blue-700 flex items-center">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                                </svg>
-                                Browse Research
+                            <a href="{{ route('research.index') }}" class="group flex items-center text-blue-600 hover:text-blue-700 font-medium transition-colors">
+                                <div class="w-10 h-10 rounded-lg bg-white flex items-center justify-center mr-3 group-hover:shadow-md transition-shadow">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                    </svg>
+                                </div>
+                                <span>Browse Research</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('contact.index') }}" class="text-blue-600 hover:text-blue-700 flex items-center">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                                </svg>
-                                Contact Us
+                            <a href="{{ route('contact.index') }}" class="group flex items-center text-blue-600 hover:text-blue-700 font-medium transition-colors">
+                                <div class="w-10 h-10 rounded-lg bg-white flex items-center justify-center mr-3 group-hover:shadow-md transition-shadow">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                                <span>Contact Us</span>
                             </a>
                         </li>
                     </ul>
@@ -194,26 +208,31 @@
 
         {{-- Related Pages Section --}}
         @if(isset($relatedPages) && $relatedPages->count() > 0)
-        <div class="mt-12 pt-12 border-t border-gray-200">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">
-                Related Pages
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="mt-16 pt-16 border-t border-gray-200">
+            <div class="text-center mb-12">
+                <span class="inline-block px-4 py-2 rounded-full text-sm font-semibold bg-blue-100 text-blue-800 mb-4">
+                    Explore More
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">
+                    Related Pages
+                </h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 @foreach($relatedPages as $relatedPage)
-                <article class="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2 hover:text-blue-600">
+                <article class="group bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1 hover:border-blue-200 transition-all duration-300">
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
                         <a href="{{ route('page.show', $relatedPage->slug) }}">
                             {{ $relatedPage->title }}
                         </a>
                     </h3>
                     @if($relatedPage->excerpt)
-                    <p class="text-gray-600 text-sm mb-3 line-clamp-2">
+                    <p class="text-gray-600 mb-4 line-clamp-3 leading-relaxed">
                         {{ $relatedPage->excerpt }}
                     </p>
                     @endif
-                    <a href="{{ route('page.show', $relatedPage->slug) }}" class="text-blue-600 hover:text-blue-700 text-sm font-medium inline-flex items-center">
+                    <a href="{{ route('page.show', $relatedPage->slug) }}" class="text-blue-600 hover:text-blue-700 font-semibold inline-flex items-center group/link">
                         Read More
-                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4 ml-1 group-hover/link:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                         </svg>
                     </a>

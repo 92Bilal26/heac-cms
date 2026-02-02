@@ -47,9 +47,16 @@ jobs:
       - name: Build frontend assets
         run: npm run build
 
+      - name: Ensure Vite dev server is disabled
+        run: rm -f public/hot
+
       - name: Create .env file
         run: |
           cp .env.example .env
+          sed -i 's/^APP_ENV=.*/APP_ENV=production/' .env
+          sed -i 's/^APP_DEBUG=.*/APP_DEBUG=false/' .env
+          sed -i 's|^APP_URL=.*|APP_URL=https://92bilal26.github.io/heac-cms|' .env
+          if grep -q '^ASSET_URL=' .env; then sed -i 's|^ASSET_URL=.*|ASSET_URL=https://92bilal26.github.io/heac-cms|' .env; else echo 'ASSET_URL=https://92bilal26.github.io/heac-cms' >> .env; fi
           sed -i 's/^DB_CONNECTION=.*/DB_CONNECTION=sqlite/' .env
           sed -i '/^DB_HOST=/d' .env
           sed -i '/^DB_PORT=/d' .env

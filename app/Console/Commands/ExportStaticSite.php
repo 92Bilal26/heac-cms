@@ -3,24 +3,41 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\URL;
 
 class ExportStaticSite extends Command
 {
-    protected $signature = 'export:static-site {--output=dist}';
+    protected $signature = 'export:static-site {--output=dist} {--base-url=} {--asset-url=}';
     protected $description = 'Export the entire website to static HTML files';
 
     private $outputPath;
     private $baseUrl;
+    private $assetUrl;
+    private $basePath = '';
 
     public function handle()
     {
         $this->outputPath = base_path($this->option('output'));
-        $this->baseUrl = rtrim(config('app.url'), '/');
+        $this->baseUrl = rtrim($this->option('base-url') ?: config('app.url'), '/');
+        $this->assetUrl = rtrim($this->option('asset-url') ?: (config('app.asset_url') ?: $this->baseUrl), '/');
+        $this->basePath = rtrim(parse_url($this->baseUrl, PHP_URL_PATH) ?? '', '/');
+
+        config([
+            'app.url' => $this->baseUrl,
+            'app.asset_url' => $this->assetUrl,
+        ]);
+
+        URL::forceRootUrl($this->baseUrl);
+        $scheme = parse_url($this->baseUrl, PHP_URL_SCHEME);
+        if (!empty($scheme)) {
+            URL::forceScheme($scheme);
+        }
 
         $this->info('Starting static site export...');
         $this->info("Base URL: {$this->baseUrl}");
+        $this->info("Asset URL: {$this->assetUrl}");
 
         // Clean output directory
         if (File::exists($this->outputPath)) {
@@ -49,8 +66,7 @@ class ExportStaticSite extends Command
         $this->info('Exporting homepage...');
 
         try {
-            $response = Http::timeout(30)->get($this->baseUrl . '/');
-            $html = $response->body();
+            $html = $this->renderPath('/');
 
             $filePath = $this->outputPath . '/index.html';
             $this->saveHtmlFile($filePath, $html);
@@ -81,8 +97,7 @@ class ExportStaticSite extends Command
 
         foreach ($pages as $page) {
             try {
-                $response = Http::timeout(30)->get($this->baseUrl . '/' . $page->slug);
-                $html = $response->body();
+                $html = $this->renderPath('/' . $page->slug);
 
                 $dirPath = $this->outputPath . '/' . $page->slug;
                 File::makeDirectory($dirPath, 0755, true, true);
@@ -107,8 +122,7 @@ class ExportStaticSite extends Command
 
         // Export research index
         try {
-            $response = Http::timeout(30)->get($this->baseUrl . '/research');
-            $html = $response->body();
+            $html = $this->renderPath('/research');
 
             $dirPath = $this->outputPath . '/research';
             File::makeDirectory($dirPath, 0755, true, true);
@@ -138,8 +152,7 @@ class ExportStaticSite extends Command
 
         foreach ($research as $article) {
             try {
-                $response = Http::timeout(30)->get($this->baseUrl . '/research/' . $article->slug);
-                $html = $response->body();
+                $html = $this->renderPath('/research/' . $article->slug);
 
                 $dirPath = $this->outputPath . '/research/' . $article->slug;
                 File::makeDirectory($dirPath, 0755, true, true);
@@ -171,8 +184,7 @@ class ExportStaticSite extends Command
 
             foreach ($categories as $category) {
                 try {
-                    $response = Http::timeout(30)->get($this->baseUrl . '/research/category/' . $category->slug);
-                    $html = $response->body();
+                    $html = $this->renderPath('/research/category/' . $category->slug);
 
                     $dirPath = $this->outputPath . '/research/category/' . $category->slug;
                     File::makeDirectory($dirPath, 0755, true, true);
@@ -205,8 +217,7 @@ class ExportStaticSite extends Command
 
             foreach ($tags as $tag) {
                 try {
-                    $response = Http::timeout(30)->get($this->baseUrl . '/research/tag/' . $tag->slug);
-                    $html = $response->body();
+                    $html = $this->renderPath('/research/tag/' . $tag->slug);
 
                     $dirPath = $this->outputPath . '/research/tag/' . $tag->slug;
                     File::makeDirectory($dirPath, 0755, true, true);
@@ -231,8 +242,7 @@ class ExportStaticSite extends Command
         $this->info('Exporting contact page...');
 
         try {
-            $response = Http::timeout(30)->get($this->baseUrl . '/contact');
-            $html = $response->body();
+            $html = $this->renderPath('/contact');
 
             $dirPath = $this->outputPath . '/contact';
             File::makeDirectory($dirPath, 0755, true, true);
@@ -252,10 +262,12 @@ class ExportStaticSite extends Command
         $publicPath = public_path();
 
         $assetDirs = [
+            'build',
             'images',
             'css',
             'js',
             'fonts',
+            'storage',
         ];
 
         foreach ($assetDirs as $dir) {
@@ -271,6 +283,25 @@ class ExportStaticSite extends Command
                 }
             }
         }
+
+        $rootFiles = [
+            'favicon.ico',
+            'robots.txt',
+        ];
+
+        foreach ($rootFiles as $file) {
+            $sourcePath = $publicPath . '/' . $file;
+            $destinationPath = $this->outputPath . '/' . $file;
+
+            if (File::exists($sourcePath)) {
+                try {
+                    File::copy($sourcePath, $destinationPath);
+                    $this->line("Copied {$file}");
+                } catch (\Exception $e) {
+                    $this->warn("Could not copy {$file}: " . $e->getMessage());
+                }
+            }
+        }
     }
 
     private function createNojekyll()
@@ -282,5 +313,65 @@ class ExportStaticSite extends Command
     private function saveHtmlFile($filePath, $html)
     {
         File::put($filePath, $html);
+    }
+
+    private function renderPath(string $path)
+    {
+        $currentPath = $path;
+        $redirects = 0;
+        $maxRedirects = 5;
+
+        while ($redirects <= $maxRedirects) {
+            try {
+                $request = Request::create($currentPath, 'GET');
+                $kernel = app(\Illuminate\Contracts\Http\Kernel::class);
+                $response = $kernel->handle($request);
+            } catch (\Throwable $e) {
+                $this->error("Failed to render {$currentPath}: " . $e->getMessage());
+                return '';
+            }
+
+            $status = $response->getStatusCode();
+            $location = $response->headers->get('Location');
+
+            if ($status >= 300 && $status < 400 && !empty($location)) {
+                $currentPath = $this->normalizePath($location);
+                $redirects++;
+                $kernel->terminate($request, $response);
+                continue;
+            }
+
+            $html = $response->getContent() ?? '';
+            $kernel->terminate($request, $response);
+
+            if ($status >= 400) {
+                $this->warn("Non-success response for {$currentPath}: {$status}");
+            }
+
+            return $html;
+        }
+
+        $this->warn("Too many redirects for {$path}");
+        return '';
+    }
+
+    private function normalizePath(string $location): string
+    {
+        $parts = parse_url($location);
+        if ($parts && isset($parts['path'])) {
+            $path = $parts['path'];
+            if (!empty($this->basePath) && str_starts_with($path, $this->basePath)) {
+                $path = substr($path, strlen($this->basePath));
+                if ($path === '') {
+                    $path = '/';
+                }
+            }
+            if (!empty($parts['query'])) {
+                $path .= '?' . $parts['query'];
+            }
+            return $path;
+        }
+
+        return $location;
     }
 }

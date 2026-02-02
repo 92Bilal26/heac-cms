@@ -3,33 +3,43 @@
 @section('content')
 <div class="bg-white">
     {{-- Page Header --}}
-    <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-12">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">
+    <div class="relative bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-800 text-white py-20 overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-0 left-0 w-96 h-96 bg-sky-400 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 right-0 w-96 h-96 bg-indigo-500 rounded-full blur-3xl"></div>
+        </div>
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <span class="inline-block px-4 py-2 rounded-full text-sm font-semibold bg-white/10 text-white backdrop-blur-sm mb-6">
+                Knowledge Hub
+            </span>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
                 Resources & Publications
             </h1>
-            <p class="text-xl text-blue-100 max-w-3xl">
+            <p class="text-xl md:text-2xl text-blue-100 max-w-4xl leading-relaxed">
                 Explore our comprehensive collection of Islamic finance research, fatwas, whitepapers, and industry insights
             </p>
         </div>
     </div>
 
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="flex flex-col lg:flex-row gap-8">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="flex flex-col lg:flex-row gap-12">
             {{-- Filter Sidebar --}}
-            <aside class="lg:w-80 flex-shrink-0" x-data="{ 
-                showCategories: true, 
+            <aside class="lg:w-80 flex-shrink-0" x-data="{
+                showCategories: true,
                 showTags: true,
                 selectedCategories: {{ json_encode(request('categories', [])) }},
                 selectedTags: {{ json_encode(request('tags', [])) }}
             }">
-                <div class="bg-gray-50 rounded-lg p-6 sticky top-20">
+                <div class="bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl p-6 sticky top-20 border border-gray-200 shadow-sm">
                     <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-lg font-semibold text-gray-900">
+                        <h2 class="text-lg font-bold text-gray-900 flex items-center">
+                            <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+                            </svg>
                             Filters
                         </h2>
                         @if(request()->hasAny(['search', 'categories', 'tags', 'year']))
-                        <a href="{{ route('research.index') }}" class="text-sm text-blue-600 hover:text-blue-700">
+                        <a href="{{ route('research.index') }}" class="text-sm text-blue-600 hover:text-blue-700 font-semibold">
                             Clear All
                         </a>
                         @endif

@@ -3,13 +3,20 @@
 @section('content')
 <div class="bg-white">
     {{-- Page Header --}}
-    <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-12">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">
+    <div class="relative bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-800 text-white py-20 overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-0 left-0 w-96 h-96 bg-sky-400 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 right-0 w-96 h-96 bg-indigo-500 rounded-full blur-3xl"></div>
+        </div>
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <span class="inline-block px-4 py-2 rounded-full text-sm font-semibold bg-white/10 text-white backdrop-blur-sm mb-6">
+                Get In Touch
+            </span>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
                 Contact Us
             </h1>
-            <p class="text-xl text-blue-100 max-w-3xl">
-                Get in touch with us for inquiries about Shariah advisory, halal certification, or Islamic finance solutions
+            <p class="text-xl md:text-2xl text-blue-100 max-w-4xl leading-relaxed">
+                Let us help you succeed in the halal economy — reach out today for Shariah advisory, halal certification, or Islamic finance solutions
             </p>
         </div>
     </div>
@@ -128,16 +135,18 @@
                                 <label for="subject" class="block text-sm font-medium text-gray-700 mb-2">
                                     Subject <span class="text-red-500">*</span>
                                 </label>
-                                <select name="subject" 
-                                        id="subject" 
+                                <select name="subject"
+                                        id="subject"
                                         required
                                         class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 @error('subject') border-red-500 @enderror">
                                     <option value="">Select a subject</option>
+                                    <option value="Shariah Advisory" {{ old('subject') == 'Shariah Advisory' ? 'selected' : '' }}>Shariah Advisory & Consultancy</option>
+                                    <option value="Shariah Audit" {{ old('subject') == 'Shariah Audit' ? 'selected' : '' }}>Shariah Audit & Compliance</option>
+                                    <option value="Sukuk Structuring" {{ old('subject') == 'Sukuk Structuring' ? 'selected' : '' }}>Sukuk & Islamic Structuring</option>
+                                    <option value="Halal Certification" {{ old('subject') == 'Halal Certification' ? 'selected' : '' }}>Halal Certification & Fatwa</option>
+                                    <option value="Training" {{ old('subject') == 'Training' ? 'selected' : '' }}>Training & Education</option>
+                                    <option value="Zakat Advisory" {{ old('subject') == 'Zakat Advisory' ? 'selected' : '' }}>Zakat & Charity Advisory</option>
                                     <option value="General Inquiry" {{ old('subject') == 'General Inquiry' ? 'selected' : '' }}>General Inquiry</option>
-                                    <option value="Accreditation" {{ old('subject') == 'Accreditation' ? 'selected' : '' }}>Accreditation</option>
-                                    <option value="Research" {{ old('subject') == 'Research' ? 'selected' : '' }}>Research</option>
-                                    <option value="Partnership" {{ old('subject') == 'Partnership' ? 'selected' : '' }}>Partnership</option>
-                                    <option value="Technical Support" {{ old('subject') == 'Technical Support' ? 'selected' : '' }}>Technical Support</option>
                                     <option value="Other" {{ old('subject') == 'Other' ? 'selected' : '' }}>Other</option>
                                 </select>
                                 @error('subject')
@@ -183,68 +192,77 @@
             <div class="lg:col-span-1">
                 <div class="bg-gray-50 rounded-lg p-6 mb-6">
                     <h3 class="text-lg font-semibold text-gray-900 mb-4">
-                        Contact Information
+                        Global Offices
                     </h3>
-                    <div class="space-y-4">
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0">
-                                <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                </svg>
-                            </div>
-                            <div class="ml-3">
-                                <p class="text-sm font-medium text-gray-900">Address</p>
-                                <p class="text-sm text-gray-600 mt-1">
-                                    123 Education Street<br>
-                                    City, State 12345<br>
-                                    Country
+                    <div class="space-y-6">
+                        <div>
+                            <p class="text-sm font-semibold text-gray-900 mb-2">Karachi, Pakistan (Headquarters)</p>
+                            <div class="flex items-start mb-3">
+                                <div class="flex-shrink-0">
+                                    <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    </svg>
+                                </div>
+                                <p class="text-sm text-gray-600 ml-2">
+                                    HEAC Building, Clifton<br>
+                                    Karachi, Pakistan
                                 </p>
                             </div>
                         </div>
 
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0">
-                                <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                                </svg>
-                            </div>
-                            <div class="ml-3">
-                                <p class="text-sm font-medium text-gray-900">Phone</p>
-                                <p class="text-sm text-gray-600 mt-1">
-                                    +1 (234) 567-8900<br>
-                                    +1 (234) 567-8901
+                        <div>
+                            <p class="text-sm font-semibold text-gray-900 mb-2">London, United Kingdom</p>
+                            <div class="flex items-start mb-3">
+                                <div class="flex-shrink-0">
+                                    <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    </svg>
+                                </div>
+                                <p class="text-sm text-gray-600 ml-2">
+                                    Islamic Finance Centre<br>
+                                    London, UK
                                 </p>
                             </div>
                         </div>
 
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0">
-                                <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                                </svg>
-                            </div>
-                            <div class="ml-3">
-                                <p class="text-sm font-medium text-gray-900">Email</p>
-                                <p class="text-sm text-gray-600 mt-1">
-                                    info@heac.org<br>
-                                    support@heac.org
-                                </p>
-                            </div>
+                        <div>
+                            <p class="text-sm font-semibold text-gray-900 mb-2">Dubai & Kuala Lumpur</p>
+                            <p class="text-sm text-gray-600">
+                                Regional offices serving the Middle East and Southeast Asia
+                            </p>
                         </div>
 
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0">
-                                <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
+                        <div class="pt-4 border-t border-gray-200">
+                            <div class="flex items-start mb-3">
+                                <div class="flex-shrink-0">
+                                    <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                                <div class="ml-2">
+                                    <p class="text-sm font-medium text-gray-900">Email</p>
+                                    <p class="text-sm text-gray-600 mt-1">
+                                        info@heac.org<br>
+                                        advisory@heac.org
+                                    </p>
+                                </div>
                             </div>
-                            <div class="ml-3">
-                                <p class="text-sm font-medium text-gray-900">Office Hours</p>
-                                <p class="text-sm text-gray-600 mt-1">
-                                    Monday - Friday: 9:00 AM - 5:00 PM<br>
-                                    Saturday - Sunday: Closed
-                                </p>
+
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0">
+                                    <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                </div>
+                                <div class="ml-2">
+                                    <p class="text-sm font-medium text-gray-900">Office Hours</p>
+                                    <p class="text-sm text-gray-600 mt-1">
+                                        Sunday - Thursday: 9:00 AM - 6:00 PM (PKT)<br>
+                                        24/7 Advisory Desk Available
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -253,11 +271,11 @@
                 {{-- Quick Links --}}
                 <div class="bg-blue-50 rounded-lg p-6">
                     <h3 class="text-lg font-semibold text-gray-900 mb-4">
-                        Quick Links
+                        Explore Our Services
                     </h3>
                     <ul class="space-y-3">
                         <li>
-                            <a href="{{ route('pages.show', 'about') }}" class="text-blue-600 hover:text-blue-700 flex items-center text-sm">
+                            <a href="{{ route('page.show', 'about') }}" class="text-blue-600 hover:text-blue-700 flex items-center text-sm">
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                 </svg>
@@ -265,19 +283,35 @@
                             </a>
                         </li>
                         <li>
+                            <a href="{{ route('page.show', 'services') }}" class="text-blue-600 hover:text-blue-700 flex items-center text-sm">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                                Our Services
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('page.show', 'training') }}" class="text-blue-600 hover:text-blue-700 flex items-center text-sm">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                </svg>
+                                Training & Events
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('page.show', 'team') }}" class="text-blue-600 hover:text-blue-700 flex items-center text-sm">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                </svg>
+                                Our Team
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{ route('research.index') }}" class="text-blue-600 hover:text-blue-700 flex items-center text-sm">
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                                 </svg>
-                                Browse Research
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('pages.show', 'faq') }}" class="text-blue-600 hover:text-blue-700 flex items-center text-sm">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
-                                FAQs
+                                Publications & Research
                             </a>
                         </li>
                     </ul>

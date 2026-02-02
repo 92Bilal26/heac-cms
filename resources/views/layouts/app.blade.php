@@ -45,12 +45,15 @@
     {{-- Header --}}
     <header class="bg-white shadow-soft sticky top-0 z-50" x-data="{ mobileMenuOpen: false }">
         <nav class="container-custom">
-            <div class="flex justify-between items-center h-16 md:h-18">
+            <div class="flex justify-between items-center h-20 md:h-24">
                 {{-- Logo --}}
                 <div class="flex-shrink-0">
                     <a href="{{ route('home') }}" class="flex items-center touch-manipulation">
-                        <img src="{{ asset('images/logo.svg') }}" alt="HEAC Logo" class="h-8 sm:h-10 w-auto">
-                        <span class="ml-2 sm:ml-3 text-lg sm:text-xl font-bold text-gray-900 hidden xs:block">HEAC</span>
+                        <img src="{{ asset('images/logo.png') }}" alt="HEAC Logo" class="h-8 sm:h-10 w-auto">
+                        <div class="ml-2 sm:ml-3 hidden xs:block">
+                            <div class="text-lg sm:text-xl font-bold text-gray-900">HEAC</div>
+                            <div class="text-[10px] sm:text-xs text-gray-600 -mt-1">Halal Economy Advisory Centre</div>
+                        </div>
                     </a>
                 </div>
 

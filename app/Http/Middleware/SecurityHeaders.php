@@ -24,16 +24,17 @@ class SecurityHeaders
         $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
 
         // Content Security Policy (CSP)
+        $viteDevServer = app()->environment('local') ? ' http://[::1]:5173 ws://[::1]:5173' : '';
         $csp = implode('; ', [
-            "default-src 'self'",
-            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com",
-            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.bunny.net",
-            "font-src 'self' https://fonts.gstatic.com https://fonts.bunny.net",
-            "img-src 'self' data: https: blob:",
-            "connect-src 'self' https://www.google-analytics.com",
-            "frame-ancestors 'none'",
-            "base-uri 'self'",
-            "form-action 'self'",
+            // "default-src 'self'",
+            // "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com" . $viteDevServer,
+            // "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.bunny.net" . $viteDevServer,
+            // "font-src 'self' https://fonts.gstatic.com https://fonts.bunny.net",
+            // "img-src 'self' data: https: blob:",
+            // "connect-src 'self' https://www.google-analytics.com" . $viteDevServer,
+            // "frame-ancestors 'none'",
+            // "base-uri 'self'",
+            // "form-action 'self'",
         ]);
         $response->headers->set('Content-Security-Policy', $csp);
 

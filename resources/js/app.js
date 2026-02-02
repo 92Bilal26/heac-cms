@@ -43,13 +43,13 @@ document.addEventListener('DOMContentLoaded', () => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const img = entry.target;
-                    
+
                     // If image has data-src, use it
                     if (img.dataset.src) {
                         img.src = img.dataset.src;
                         img.removeAttribute('data-src');
                     }
-                    
+
                     img.classList.remove('lazy');
                     img.classList.add('loaded');
                     imageObserver.unobserve(img);
@@ -111,12 +111,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add loading state to forms
     const forms = document.querySelectorAll('form');
     forms.forEach(form => {
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', function (e) {
             const submitButton = this.querySelector('button[type="submit"]');
             if (submitButton && !submitButton.disabled) {
                 submitButton.disabled = true;
                 submitButton.classList.add('opacity-75', 'cursor-not-allowed');
-                
+
                 // Add loading spinner
                 const originalText = submitButton.innerHTML;
                 submitButton.innerHTML = `
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </svg>
                     Processing...
                 `;
-                
+
                 // Restore button after 10 seconds as fallback
                 setTimeout(() => {
                     submitButton.disabled = false;
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Add ripple effect to buttons
     document.querySelectorAll('.btn, .btn-primary, .btn-secondary, .btn-outline').forEach(button => {
-        button.addEventListener('click', function(e) {
+        button.addEventListener('click', function (e) {
             if (window.shouldReduceMotion()) {
                 return;
             }
@@ -177,23 +177,23 @@ document.addEventListener('DOMContentLoaded', () => {
             const size = Math.max(rect.width, rect.height);
             const x = e.clientX - rect.left - size / 2;
             const y = e.clientY - rect.top - size / 2;
-            
+
             ripple.style.width = ripple.style.height = size + 'px';
             ripple.style.left = x + 'px';
             ripple.style.top = y + 'px';
             ripple.classList.add('ripple');
-            
+
             this.style.position = 'relative';
             this.style.overflow = 'hidden';
             this.appendChild(ripple);
-            
+
             setTimeout(() => ripple.remove(), 600);
         });
     });
 });
 
 // Testimonial slider component
-window.testimonialSlider = function() {
+window.testimonialSlider = function () {
     return {
         active: 0,
         testimonials: [
