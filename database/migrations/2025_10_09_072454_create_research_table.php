@@ -34,9 +34,11 @@ return new class extends Migration
             $table->index('status');
             $table->index('featured');
             $table->index('publication_date');
-            
-            // Full-text search index (MySQL)
-            $table->fullText(['title', 'abstract']);
+
+            // Full-text search index (MySQL only - skip for SQLite)
+            if (config('database.default') !== 'sqlite') {
+                $table->fullText(['title', 'abstract']);
+            }
         });
     }
 
